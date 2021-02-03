@@ -6,8 +6,8 @@ router.get("/", (request, response) => {
 
   connection.query(sql, (err, res) => {
     if (err) throw err;
-
-    response.send(res);
+    const result = res.filter((solicitud) => solicitud.status !== 1);
+    response.send(result);
   });
 });
 
@@ -22,7 +22,5 @@ router.get("/:id", (request, response) => {
     response.send(res);
   });
 });
-
-router.put("/actualizacion", (request, response) => {});
 
 module.exports = router;
