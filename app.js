@@ -31,10 +31,12 @@ const clientes = require("./routes/clientes");
 const inmuebles = require("./routes/inmuebles");
 const embargo = require("./routes/embargos");
 const refinanciamiento = require("./routes/refinanciamientos");
+const morosidades = require("./routes/morosidades");
 
 server.use("/solicitudes", solicitudes);
 server.use("/contratos", contratos);
 server.use("/clientes", clientes);
 server.use("/inmuebles", inmuebles);
-/* server.use("/embargo", embargo);
-server.use("/refinanciamiento", refinanciamiento); */
+server.use("/embargos", embargo);
+server.use("/refinanciamientos", refinanciamiento);
+server.use("/morosidades", morosidades);

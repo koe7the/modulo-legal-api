@@ -14,6 +14,15 @@ router.get("/", (request, response) => {
   });
 });
 
+router.get("/:id", (request, response) => {
+  const id = request.params.id;
+  let sql = `SELECT * FROM contratos WHERE id=${id}`;
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    response.send(res);
+  });
+});
+
 router.get("/contrato/:tipo/:id", (request, response) => {
   const tipo = request.params.tipo;
   const id = request.params.id;
@@ -128,10 +137,15 @@ router.put("/actualizacion", (request, response) => {
   };
 
   /* el error es que el texto se tiene que manualmente convertir en texto */
-  let sql = `Update contratos Set derechos_cliente="${contrato.derechos_cliente}", obligaciones_cliente="${contrato.obligaciones_cliente}", derechos_empresa="${contrato.derechos_empresa}", obligaciones_empresa="${contrato.obligaciones_empresa}", clausulas="${contrato.clausulas}", condicion_propiedad="${contrato.condicion_propiedad}", direccion_fiscal="${contrato.direccion_fiscal}", proposito="${contrato.proposito}" Where id=${contrato.id} `;
+  let sql = `Update contratos Set derechos_cliente="${contrato.derechos_cliente}", obligaciones_cliente="${contrato.obligaciones_cliente}", derechos_empresa="${contrato.derechos_empresa}", obligaciones_empresa="${contrato.obligaciones_empresa}", clausulas="${contrato.clausulas}", condicion_propiedad="${contrato.condicion_propiedad}", direccion_fiscal="${contrato.direccion_fiscal}", ree=0, proposito="${contrato.proposito}" Where id=${contrato.id} `;
 
   connection.query(sql, (err, res) => {
     if (err) throw err;
+
+    let sql = `DELETE  FROM morosidades_credito WHERE id_contrato=${contrato.id}`;
+    connection.query(sql, (err, res) => {
+      if (err) throw err;
+    });
 
     if (data.modo_contrato.tipo === "credito") {
       const contrato_credito = {
